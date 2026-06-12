@@ -1,0 +1,9 @@
+{"run_id":"run-success","seq":0,"timestamp":"2026-06-11T14:03:00Z","event_type":"run_started","agent":"orchestrator","payload":{"task_summary":"Fix failing checkout playwright test"}}
+{"run_id":"run-success","seq":1,"timestamp":"2026-06-11T14:03:02Z","event_type":"task_received","agent":"orchestrator","payload":{"task":"Diagnose and fix failing checkout playwright test"}}
+{"run_id":"run-success","seq":2,"timestamp":"2026-06-11T14:03:10Z","event_type":"model_call_started","agent":"orchestrator","payload":{"model":"nemotron-ultra"}}
+{"run_id":"run-success","seq":3,"timestamp":"2026-06-11T14:03:22Z","event_type":"model_call_completed","agent":"orchestrator","payload":{"model":"nemotron-ultra","tokens_in":1200,"tokens_out":340,"latency_ms":47200,"status":"ok"}}
+{"run_id":"run-success","seq":4,"timestamp":"2026-06-11T14:03:40Z","event_type":"file_read","agent":"cline-implementer","payload":{"path":"tests/checkout.spec.ts"}}
+{"run_id":"run-success","seq":5,"timestamp":"2026-06-11T14:04:10Z","event_type":"file_edited","agent":"cline-implementer","payload":{"path":"tests/checkout.spec.ts","summary":"Updated selector to wait for checkout button after auth completes"}}
+{"run_id":"run-success","seq":6,"timestamp":"2026-06-11T14:04:40Z","event_type":"command_completed","agent":"cline-implementer","payload":{"command":"npm test -- checkout.spec.ts","exit_code":0,"summary":"Checkout spec passed"}}
+{"run_id":"run-success","seq":7,"timestamp":"2026-06-11T14:05:00Z","event_type":"validator_completed","agent":"cline-implementer","payload":{"validator":"pytest","passed":true,"errors":[]}}
+{"run_id":"run-success","seq":8,"timestamp":"2026-06-11T14:05:10Z","event_type":"run_completed","agent":"orchestrator","payload":{"outcome":"success"}}

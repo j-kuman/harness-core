@@ -1,0 +1,3 @@
+{"run_id":"run-risky-command","seq":0,"timestamp":"2026-06-11T16:00:00Z","event_type":"run_started","agent":"orchestrator","payload":{"task_summary":"Clean build artifacts"}}
+{"run_id":"run-risky-command","seq":1,"timestamp":"2026-06-11T16:00:10Z","event_type":"command_completed","agent":"cline-implementer","payload":{"command":"rm -rf build/ && git clean -fdx","exit_code":0,"summary":"Removed build outputs and untracked generated files"}}
+{"run_id":"run-risky-command","seq":2,"timestamp":"2026-06-11T16:00:20Z","event_type":"run_completed","agent":"orchestrator","payload":{"outcome":"success"}}

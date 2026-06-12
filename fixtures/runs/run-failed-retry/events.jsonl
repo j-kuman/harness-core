@@ -1,0 +1,9 @@
+{"run_id":"run-failed-retry","seq":0,"timestamp":"2026-06-11T15:00:00Z","event_type":"run_started","agent":"orchestrator","payload":{"task_summary":"Repair flaky login test"}}
+{"run_id":"run-failed-retry","seq":1,"timestamp":"2026-06-11T15:00:05Z","event_type":"task_received","agent":"orchestrator","payload":{"task":"Find root cause of login test flake"}}
+{"run_id":"run-failed-retry","seq":2,"timestamp":"2026-06-11T15:00:20Z","event_type":"model_call_started","agent":"orchestrator","payload":{"model":"nemotron-ultra"}}
+{"run_id":"run-failed-retry","seq":3,"timestamp":"2026-06-11T15:01:00Z","event_type":"model_call_completed","agent":"orchestrator","payload":{"model":"nemotron-ultra","tokens_in":900,"tokens_out":0,"latency_ms":40000,"status":"error"}}
+{"run_id":"run-failed-retry","seq":4,"timestamp":"2026-06-11T15:01:10Z","event_type":"model_call_started","agent":"orchestrator","payload":{"model":"claude-sonnet"}}
+{"run_id":"run-failed-retry","seq":5,"timestamp":"2026-06-11T15:01:40Z","event_type":"model_call_completed","agent":"orchestrator","payload":{"model":"claude-sonnet","tokens_in":950,"tokens_out":220,"latency_ms":30000,"status":"ok"}}
+{"run_id":"run-failed-retry","seq":6,"timestamp":"2026-06-11T15:02:10Z","event_type":"command_completed","agent":"cline-implementer","payload":{"command":"npm test -- login.spec.ts","exit_code":1,"summary":"Login spec failed on CI auth setup"}}
+{"run_id":"run-failed-retry","seq":7,"timestamp":"2026-06-11T15:02:30Z","event_type":"validator_completed","agent":"cline-implementer","payload":{"validator":"playwright","passed":false,"errors":["auth fixture missing session cookie"]}}
+{"run_id":"run-failed-retry","seq":8,"timestamp":"2026-06-11T15:02:45Z","event_type":"run_failed","agent":"orchestrator","payload":{"error":"Could not repair auth fixture within iteration budget"}}

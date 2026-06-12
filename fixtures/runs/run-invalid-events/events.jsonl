@@ -1,0 +1,9 @@
+{"run_id":"run-invalid-events","seq":0,"timestamp":"2026-06-11T18:00:00Z","event_type":"run_started","agent":"orchestrator","payload":{"task_summary":"Validate quarantine behavior"}}
+{"run_id":"run-invalid-events","seq":1,"timestamp":"2026-06-11T18:00:05Z","event_type":"task_received","agent":"orchestrator","payload":{"task":"Replay mixed valid and invalid events"}}
+{"run_id":"run-invalid-events","seq":2,"timestamp":"2026-06-11T18:00:10Z","event_type":"reviewer_started","agent":"orchestrator","payload":{}}
+{"run_id":"run-invalid-events","seq":3,"timestamp":"2026-06-11T18:00:20Z","event_type":"model_call_started","agent":"orchestrator","payload":{"model":"nemotron-ultra"}}
+{"run_id":"run-invalid-events","seq":4,"timestamp":"2026-06-11T18:01:00Z","event_type":"model_call_completed","agent":"orchestrator","payload":{"model":"nemotron-ultra","tokens_in":1200,"latency_ms":47200,"status":"ok"}}
+{"run_id":"run-invalid-events","seq":5,"timestamp":"2026-06-11T18:01:20Z","event_type":"file_read","agent":"cline-implementer","payload":{"path":"src/app.py"}}
+{"run_id":"run-invalid-events","seq":4,"timestamp":"2026-06-11T18:01:30Z","event_type":"command_completed","agent":"cline-implementer","payload":{"command":"pytest","exit_code":0,"summary":"Tests passed"}}
+{"run_id":"run-invalid-events","seq":6,"timestamp":"2026-06-11T18:01:40Z","event_type":"validator_completed","agent":"cline-implementer","payload":{"validator":"pytest","passed":true,"errors":[]}}
+{"run_id":"run-invalid-events","seq":7,"timestamp":"2026-06-11T18:02:00Z","event_type":"run_completed","agent":"orchestrator","payload":{"outcome":"success"}}
