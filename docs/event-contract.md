@@ -51,6 +51,25 @@ The implementation uses strict integer checks for integer fields: booleans do
 not count as integers. `confidence` accepts integers or floats within range, but
 not booleans.
 
+## Optional metadata conventions
+
+`model_call_started` and `model_call_completed` payloads may include reserved
+optional metadata keys for downstream joins. These keys are conventions only:
+the validator does not require them, does not type-check them, and does not
+reject events when they are absent.
+
+| Key | Convention |
+|---|---|
+| `reasoning_level` | String: `none`, `low`, `medium`, or `high`. |
+| `context_window` | Integer model maximum context window. |
+| `context_window_used` | Integer amount of context used for the call. |
+| `context_packet_id` | String identifier for the context packet supplied to the call. |
+| `context_refs` | List of string references to source context items. |
+
+Because payloads are open, these keys are preserved like any other extra
+payload keys. Consumers may use them when present, but producers are not
+required to emit them.
+
 ## Deferred events
 
 These names are reserved for later milestones and are rejected as unknown event
