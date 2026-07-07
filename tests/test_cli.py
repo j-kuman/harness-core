@@ -64,6 +64,90 @@ def test_quarantined_append_exits_two(tmp_path) -> None:
     assert "tokens_out" in result.output
 
 
+def test_append_accepts_payload_file(tmp_path) -> None:
+    runner = CliRunner()
+    root = tmp_path / ".agent-runs"
+    payload_path = tmp_path / "payload.json"
+    payload_path.write_text('{"path":"src/harness_core/validation.py"}', encoding="utf-8")
+    new_result = runner.invoke(app, ["new-run", "--task", "smoke", "--root", str(root)])
+    run_id = new_result.output.strip()
+
+    result = runner.invoke(
+        app,
+        [
+            "append",
+            run_id,
+            "--type",
+            "file_read",
+            "--agent",
+            "human",
+            "--payload-file",
+            str(payload_path),
+            "--root",
+            str(root),
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert result.output.strip() == "1"
+
+
+def test_append_accepts_payload_stdin(tmp_path) -> None:
+    runner = CliRunner()
+    root = tmp_path / ".agent-runs"
+    new_result = runner.invoke(app, ["new-run", "--task", "smoke", "--root", str(root)])
+    run_id = new_result.output.strip()
+
+    result = runner.invoke(
+        app,
+        [
+            "append",
+            run_id,
+            "--type",
+            "file_read",
+            "--agent",
+            "human",
+            "--payload-stdin",
+            "--root",
+            str(root),
+        ],
+        input='{"path":"src/harness_core/validation.py"}',
+    )
+
+    assert result.exit_code == 0
+    assert result.output.strip() == "1"
+
+
+def test_append_rejects_multiple_payload_sources(tmp_path) -> None:
+    runner = CliRunner()
+    root = tmp_path / ".agent-runs"
+    payload_path = tmp_path / "payload.json"
+    payload_path.write_text('{"path":"src/harness_core/validation.py"}', encoding="utf-8")
+    new_result = runner.invoke(app, ["new-run", "--task", "smoke", "--root", str(root)])
+    run_id = new_result.output.strip()
+
+    result = runner.invoke(
+        app,
+        [
+            "append",
+            run_id,
+            "--type",
+            "file_read",
+            "--agent",
+            "human",
+            "--payload",
+            '{"path":"src/harness_core/validation.py"}',
+            "--payload-file",
+            str(payload_path),
+            "--root",
+            str(root),
+        ],
+    )
+
+    assert result.exit_code == 2
+    assert "Provide exactly one" in result.output
+
+
 def test_replay_command_outputs_timeline() -> None:
     result = CliRunner().invoke(app, ["replay", str(FIXTURES / "runs" / "run-decision-override")])
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -25,17 +26,12 @@ def append_event(
     run_id: str,
     event_type: str = typer.Option(..., "--type"),
     agent: str = typer.Option(..., "--agent"),
-    payload: str = typer.Option(..., "--payload"),
+    payload: str | None = typer.Option(None, "--payload"),
+    payload_file: Path | None = typer.Option(None, "--payload-file"),
+    payload_stdin: bool = typer.Option(False, "--payload-stdin"),
     root: Path = typer.Option(Path(".agent-runs"), "--root"),
 ) -> None:
-    try:
-        parsed_payload = json.loads(payload)
-    except json.JSONDecodeError as exc:
-        typer.echo(f"Invalid payload JSON: {exc}", err=True)
-        raise typer.Exit(2)
-    if not isinstance(parsed_payload, dict):
-        typer.echo("Invalid payload JSON: expected object", err=True)
-        raise typer.Exit(2)
+    parsed_payload = _load_payload(payload, payload_file, payload_stdin)
 
     writer = RunWriter(root, run_id)
     seq = writer.append(event_type, agent, parsed_payload)
@@ -93,6 +89,30 @@ def _validate_run_lines(run_dir: Path) -> tuple[int, list[tuple[int, str]]]:
                 errors.append((line_number, error))
 
     return valid_count, errors
+
+
+def _load_payload(payload: str | None, payload_file: Path | None, payload_stdin: bool) -> dict[str, Any]:
+    sources = [payload is not None, payload_file is not None, payload_stdin]
+    if sum(sources) != 1:
+        typer.echo("Provide exactly one of --payload, --payload-file, or --payload-stdin", err=True)
+        raise typer.Exit(2)
+
+    if payload_file is not None:
+        payload_text = payload_file.read_text(encoding="utf-8")
+    elif payload_stdin:
+        payload_text = sys.stdin.read()
+    else:
+        payload_text = payload or ""
+
+    try:
+        parsed_payload = json.loads(payload_text)
+    except json.JSONDecodeError as exc:
+        typer.echo(f"Invalid payload JSON: {exc}", err=True)
+        raise typer.Exit(2)
+    if not isinstance(parsed_payload, dict):
+        typer.echo("Invalid payload JSON: expected object", err=True)
+        raise typer.Exit(2)
+    return parsed_payload
 
 
 def _last_invalid_record(run_dir: Path) -> dict[str, Any]:
