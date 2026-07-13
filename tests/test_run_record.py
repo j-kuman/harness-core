@@ -29,6 +29,37 @@ def test_failed_retry_run_record() -> None:
     assert record.models_used == ["claude-sonnet", "nemotron-ultra"]
 
 
+def test_run_completed_without_outcome_key_yields_none(tmp_path) -> None:
+    events = [
+        {
+            "run_id": "run-x",
+            "seq": 0,
+            "timestamp": "2026-07-13T00:00:00Z",
+            "event_type": "run_started",
+            "agent": "orchestrator",
+            "payload": {"task_summary": "x"},
+        },
+        {
+            "run_id": "run-x",
+            "seq": 1,
+            "timestamp": "2026-07-13T00:00:01Z",
+            "event_type": "run_completed",
+            "agent": "orchestrator",
+            "payload": {},
+        },
+    ]
+    run_dir = tmp_path / "run-x"
+    run_dir.mkdir()
+    (run_dir / "events.jsonl").write_text(
+        "".join(json.dumps(event) + "\n" for event in events), encoding="utf-8"
+    )
+
+    record = build_run_record(run_dir)
+
+    assert record.status == "completed"
+    assert record.outcome is None
+
+
 def test_invalid_run_record_status_rejected() -> None:
     raw = json.loads((FIXTURES / "records" / "run.invalid.json").read_text())
 

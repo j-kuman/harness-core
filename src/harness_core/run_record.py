@@ -42,7 +42,7 @@ def build_run_record(run_dir: Path) -> RunRecord:
     elif terminal["event_type"] == "run_completed":
         status = "completed"
         ended_at = terminal["timestamp"]
-        outcome = terminal["payload"]["outcome"]
+        outcome = terminal.get("payload", {}).get("outcome")
     else:
         status = "failed"
         ended_at = terminal["timestamp"]

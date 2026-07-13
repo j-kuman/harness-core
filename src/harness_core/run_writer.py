@@ -62,8 +62,14 @@ class RunWriter:
         for line in path.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
-            raw = json.loads(line)
-            prev_seq = max(prev_seq, raw["seq"])
+            try:
+                seq = json.loads(line)["seq"]
+            except (json.JSONDecodeError, TypeError, KeyError):
+                # A torn tail (crash mid-append) must not brick the writer;
+                # the bad line stays on disk for readers to classify.
+                continue
+            if isinstance(seq, int) and not isinstance(seq, bool):
+                prev_seq = max(prev_seq, seq)
         return prev_seq
 
     @staticmethod
